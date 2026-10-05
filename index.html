@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <title>Classroom | Student Attendance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" aria-label="Classroom dashboard">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span><strong>classroom</strong><small>STUDENT MANAGEMENT</small></span>
+      </a>
+
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+        <button class="nav-link" data-view="students"><span class="nav-icon">♙</span>Students<span class="nav-count" id="student-nav-count">0</span></button>
+        <button class="nav-link" data-view="student-form"><span class="nav-icon">＋</span>Add student</button>
+        <button class="nav-link" data-view="attendance"><span class="nav-icon">◷</span>Attendance</button>
+        <button class="nav-link" data-view="history"><span class="nav-icon">▤</span>Attendance history</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="privacy-mini"><span class="privacy-dot"></span><span>Private on this device</span></div>
+        <button class="nav-link" data-view="settings"><span class="nav-icon">⚙</span>Settings &amp; backup</button>
+        <div class="sidebar-foot">CLASSROOM ADMIN <span>LOCAL MODE</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="current-section">Dashboard</strong></div>
+        <div class="topbar-right"><span class="today-label" id="topbar-date"></span><span class="avatar">AD</span></div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="view-section active" id="view-dashboard">
+          <div class="page-heading heading-row">
+            <div><p class="eyebrow">OVERVIEW</p><h1>Good morning, Admin</h1><p class="page-subtitle">Here’s what’s happening in your school today.</p></div>
+            <button class="button button-primary" data-go="student-form"><span>＋</span> Add student</button>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card"><div class="stat-top"><span>Total students</span><span class="stat-icon blue">♙</span></div><strong id="stat-students">0</strong><small>Registered students</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Classes</span><span class="stat-icon green">▦</span></div><strong id="stat-classes">0</strong><small>Active class groups</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Sections</span><span class="stat-icon amber">▧</span></div><strong id="stat-sections">0</strong><small>Across all classes</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Present today</span><span class="stat-icon green">✓</span></div><strong id="stat-present">0</strong><small id="stat-present-caption">Attendance not recorded</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Absent today</span><span class="stat-icon red">×</span></div><strong id="stat-absent">0</strong><small id="stat-absent-caption">Attendance not recorded</small></article>
+          </div>
+
+          <section class="panel summary-panel">
+            <div class="panel-heading">
+              <div><h2>Attendance summary</h2><p>Daily attendance across all classes</p></div>
+              <label class="date-control">Date <input type="date" id="dashboard-date" aria-label="Dashboard attendance date"></label>
+            </div>
+            <div class="summary-content">
+              <div class="summary-chart" aria-label="Attendance distribution">
+                <div class="chart-ring" id="summary-ring"><div><strong id="summary-rate">0%</strong><span>attendance</span></div></div>
+                <div class="chart-legend">
+                  <div><i class="legend-dot present-dot"></i><span>Present</span><strong id="summary-present">0</strong></div>
+                  <div><i class="legend-dot absent-dot"></i><span>Absent</span><strong id="summary-absent">0</strong></div>
+                  <div><i class="legend-dot late-dot"></i><span>Late</span><strong id="summary-late">0</strong></div>
+                  <div><i class="legend-dot unmarked-dot"></i><span>Unmarked</span><strong id="summary-unmarked">0</strong></div>
+                </div>
+              </div>
+              <div class="class-summary">
+                <div class="subheading"><strong>By class</strong><button class="text-button" data-go="attendance">Take attendance <span>→</span></button></div>
+                <div id="dashboard-class-summary" class="class-summary-list"></div>
+              </div>
+            </div>
+          </section>
+
+          <div class="privacy-banner"><span class="privacy-shield">◆</span><div><strong>Your data stays on this device</strong><p>Student information is stored locally in this browser and is never sent to a server.</p></div><button class="text-button" data-go="settings">Back up data <span>→</span></button></div>
+        </section>
+
+        <section class="view-section" id="view-students">
+          <div class="page-heading heading-row"><div><p class="eyebrow">DIRECTORY</p><h1>Students</h1><p class="page-subtitle">Manage your student records and contact details.</p></div><button class="button button-primary" data-go="student-form"><span>＋</span> Add student</button></div>
+          <div class="panel table-panel">
+            <div class="table-toolbar">
+              <label class="search-box"><span>⌕</span><input type="search" id="student-search" placeholder="Search name, ID, phone..." aria-label="Search students"></label>
+              <div class="filters"><select id="filter-class" aria-label="Filter by class"><option value="">All classes</option></select><select id="filter-section" aria-label="Filter by section"><option value="">All sections</option></select></div>
+              <span class="result-count" id="student-result-count">0 students</span>
+            </div>
+            <div class="table-scroll"><table><thead><tr><th>STUDENT</th><th>PHONE</th><th>CLASS</th><th>SECTION</th><th>GENDER</th><th class="actions-heading">ACTIONS</th></tr></thead><tbody id="student-table-body"></tbody></table></div>
+            <div class="empty-state" id="students-empty"><span class="empty-icon">♙</span><strong>No students yet</strong><p>Add your first student to start building the directory.</p><button class="button button-primary" data-go="student-form">Add a student</button></div>
+          </div>
+        </section>
+
+        <section class="view-section" id="view-student-form">
+          <div class="page-heading"><p class="eyebrow">STUDENT RECORD</p><h1 id="form-page-title">Add a student</h1><p class="page-subtitle">Fill in the student’s details. Required fields are marked with an asterisk.</p></div>
+          <form id="student-form" class="panel student-form" novalidate>
+            <input type="hidden" id="editing-id">
+            <div class="form-section-title"><span class="section-number">01</span><div><strong>Basic information</strong><small>Student identity and enrollment</small></div></div>
+            <div class="form-grid">
+              <label class="field"><span>Student ID / Roll Number <b>*</b></span><input id="student-id" name="studentId" required maxlength="40" placeholder="e.g. 10-024"><small class="field-error" data-error="student-id"></small></label>
+              <label class="field"><span>Student full name <b>*</b></span><input id="student-name" name="name" required maxlength="100" placeholder="Full name"></label>
+              <label class="field"><span>Father's / Mother's name</span><input id="parent-name" maxlength="100" placeholder="Parent or guardian name"></label>
+              <label class="field"><span>Date of birth</span><input id="student-dob" type="date"></label>
+              <label class="field"><span>Gender</span><select id="student-gender"><option value="">Select gender</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></label>
+              <label class="field"><span>Admission date</span><input id="admission-date" type="date"></label>
+            </div>
+            <div class="form-section-title form-section-spaced"><span class="section-number">02</span><div><strong>Contact details</strong><small>How to reach the student or family</small></div></div>
+            <div class="form-grid">
+              <label class="field"><span>Phone number</span><input id="student-phone" type="tel" inputmode="tel" maxlength="25" placeholder="e.g. +1 555 010 2040"><small class="field-error" data-error="student-phone"></small></label>
+              <label class="field"><span>Email address</span><input id="student-email" type="email" maxlength="120" placeholder="name@example.com"></label>
+              <label class="field"><span>Class <b>*</b></span><input id="student-class" required maxlength="40" placeholder="e.g. Grade 10"></label>
+              <label class="field"><span>Section <b>*</b></span><input id="student-section" required maxlength="40" placeholder="e.g. A"></label>
+              <label class="field field-wide"><span>Address</span><textarea id="student-address" rows="2" maxlength="300" placeholder="Home address"></textarea></label>
+              <label class="field field-wide"><span>Additional details / notes</span><textarea id="student-notes" rows="3" maxlength="1000" placeholder="Anything else you'd like to record"></textarea></label>
+            </div>
+            <div class="form-footer"><span class="required-note"><b>*</b> Required fields</span><div><button type="button" class="button button-quiet" id="cancel-student-form">Cancel</button><button type="submit" class="button button-primary" id="save-student-button">Save student</button></div></div>
+          </form>
+        </section>
+
+        <section class="view-section" id="view-attendance">
+          <div class="page-heading heading-row"><div><p class="eyebrow">DAILY REGISTER</p><h1>Attendance</h1><p class="page-subtitle">Record attendance for a class and section.</p></div><span class="saved-note"><i></i> Saved on this device</span></div>
+          <div class="panel attendance-panel">
+            <div class="attendance-filters">
+              <label class="field"><span>Date</span><input type="date" id="attendance-date"></label>
+              <label class="field"><span>Class</span><select id="attendance-class"><option value="">Select class</option></select></label>
+              <label class="field"><span>Section</span><select id="attendance-section" disabled><option value="">Select section</option></select></label>
+              <div class="attendance-count" id="attendance-student-count">Choose a class and section</div>
+            </div>
+            <div id="attendance-list-wrap" class="attendance-list-wrap">
+              <div class="attendance-placeholder"><span>◷</span><strong>Choose a class to get started</strong><p>Students in that class and section will appear here.</p></div>
+            </div>
+            <div class="attendance-footer" id="attendance-footer" hidden><span id="attendance-save-state">Changes are not saved yet</span><button type="button" class="button button-primary" id="save-attendance">Save attendance</button></div>
+          </div>
+        </section>
+
+        <section class="view-section" id="view-history">
+          <div class="page-heading"><p class="eyebrow">RECORDS</p><h1>Attendance history</h1><p class="page-subtitle">Review attendance patterns for an individual student.</p></div>
+          <div class="panel history-panel">
+            <div class="history-filters"><label class="field"><span>Student</span><select id="history-student"><option value="">Select a student</option></select></label><label class="field"><span>From</span><input type="date" id="history-from"></label><label class="field"><span>To</span><input type="date" id="history-to"></label></div>
+            <div id="history-content"><div class="history-placeholder"><span>▤</span><strong>Select a student to view history</strong><p>Attendance totals and daily records will appear here.</p></div></div>
+          </div>
+        </section>
+
+        <section class="view-section" id="view-settings">
+          <div class="page-heading"><p class="eyebrow">PREFERENCES</p><h1>Settings &amp; backup</h1><p class="page-subtitle">Manage your local records and data backups.</p></div>
+          <div class="settings-layout">
+            <section class="panel settings-panel"><div class="settings-heading"><span class="settings-icon">⇧</span><div><h2>Data backup</h2><p>Move your records between devices or keep a safe copy.</p></div></div><div class="backup-actions"><button type="button" class="button button-primary" id="export-data"><span>↓</span> Export data</button><button type="button" class="button button-secondary" id="import-data-button"><span>↑</span> Import data</button><input type="file" id="import-file" accept=".json,application/json" hidden></div><p class="settings-hint">Your export includes all student records and attendance history as a JSON file.</p></section>
+            <section class="panel settings-panel privacy-settings"><div class="settings-heading"><span class="settings-icon shield-icon">◆</span><div><h2>Local &amp; private</h2><p>This version is intended for local or demo use.</p></div></div><div class="privacy-copy"><p>Student information is stored in this browser's local storage. It is not uploaded or sent to any external server.</p><p>Anyone with access to this browser profile may be able to view these records. Use <strong>Export data</strong> to keep a separate backup before clearing browser data.</p></div><div class="storage-status"><span class="privacy-dot"></span><span>Local storage active</span><strong id="storage-record-count">0 records</strong></div></section>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="student-modal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-header"><div><p class="eyebrow">STUDENT PROFILE</p><h2 id="modal-title">Student details</h2></div><button class="icon-button" id="close-modal" aria-label="Close profile">×</button></div>
+      <div id="student-profile-content" class="profile-content"></div>
+      <div class="modal-footer"><button type="button" class="button button-danger-quiet" id="modal-delete">Delete student</button><div><button type="button" class="button button-quiet" id="modal-close-secondary">Close</button><button type="button" class="button button-primary" id="modal-edit">Edit student</button></div></div>
+    </section>
+  </div>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>
